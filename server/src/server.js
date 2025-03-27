@@ -59,5 +59,26 @@ app.delete("/movies/:id", async (req, res) => {
   }
 });
 
+app.patch("/movies/:id/watched", async (req, res) => {
+  const { id } = req.params;
+  const { watched } = req.body; // Expecting { watched: true/false }
+
+  try {
+    const updatedMovie = await knex("movies")
+      .where({ id })
+      .update({ watched })
+      .returning("*");
+
+    if (!updatedMovie.length) {
+      return res.status(404).json({ error: "Movie not found" });
+    }
+
+    res.json(updatedMovie[0]); // Return the updated movie
+  } catch (err) {
+    console.error("Error updating watched status:", err);
+    res.status(500).json({ error: "Failed to update movie status" });
+  }
+});
+
 
 app.listen(PORT, () => console.log(`Express server is listening on ${PORT}.`))

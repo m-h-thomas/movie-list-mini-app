@@ -11,11 +11,11 @@ function App() {
 
   //Fetch movie list from database
   useEffect(() => {
-    fetch(`http://localhost:8081/movies`)
-    .then(res => res.json())
-    .then(movie => setMovies(movie))
-  }, [])
-
+    fetch("http://localhost:8081/movies")
+      .then((res) => res.json())
+      .then((movies) => setMovies(movies))
+      .catch((err) => console.log(err));
+  }, []);
   //Handle search
   const filteredMovies = movies.filter((movie) =>
     movie.title.toLowerCase().includes(search.toLowerCase())
@@ -79,6 +79,34 @@ function App() {
     }
   };
 
+  const toggleWatched = async (id, currentStatus) => {
+    try {
+      const response = await fetch(`http://localhost:8081/movies/${id}/watched`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ watched: !currentStatus }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to update watched status");
+      }
+
+      const updatedMovie = await response.json();
+
+      // Update state with the new watched status
+      setMovies((prevMovies) =>
+        prevMovies.map((movie) =>
+          movie.id === updatedMovie.id ? updatedMovie : movie
+        )
+      );
+    } catch (error) {
+      console.error("Error updating watched status:", error);
+      alert("Failed to update watched status.");
+    }
+  };
+
   return (
     <>
 
@@ -98,6 +126,12 @@ function App() {
           filteredMovies.map((movie) => (
             <div key={movie.id} className="movie-item">
               <p>{movie.title}</p>
+              <button
+                className={`watched-button ${movie.watched ? "watched" : "not-watched"}`}
+                  onClick={() => toggleWatched(movie.id, movie.watched)}
+              >
+                {movie.watched ? "Watched ✅" : "Not Watched ❌"}
+              </button>
               <button className="delete-button" onClick={() => handleDeleteMovie(movie.id)}>Delete</button>
             </div>
           ))
