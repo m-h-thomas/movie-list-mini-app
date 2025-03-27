@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import './index.css'
 import './App.css'
 
 function App() {
@@ -58,6 +59,26 @@ function App() {
     }
   };
 
+  const handleDeleteMovie = async (id) => {
+    if (!window.confirm("Are you sure you want to delete this movie?")) return;
+
+    try {
+      const response = await fetch(`http://localhost:8081/movies/${id}`, {
+        method: "DELETE",
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to delete movie");
+      }
+
+      // Update state by filtering out the deleted movie
+      setMovies(movies.filter((movie) => movie.id !== id));
+    } catch (error) {
+      console.error("Error deleting movie:", error);
+      alert("Failed to delete movie.");
+    }
+  };
+
   return (
     <>
 
@@ -73,8 +94,16 @@ function App() {
       </div>
 
       <h1>Movie List</h1>
-
-      {(filteredMovies.map((movie, index) => <p key={index}>{movie.title}</p>))}
+        {filteredMovies.length > 0 ? (
+          filteredMovies.map((movie) => (
+            <div key={movie.id} className="movie-item">
+              <p>{movie.title}</p>
+              <button className="delete-button" onClick={() => handleDeleteMovie(movie.id)}>Delete</button>
+            </div>
+          ))
+        ) : (
+        <p>No movies found</p>
+      )}
 
       {/* Add Movie Form */}
       <form onSubmit={handleAddMovie}>

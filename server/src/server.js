@@ -43,4 +43,21 @@ app.post("/movies", async (req, res) => {
   }
 });
 
+app.delete("/movies/:id", async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const deletedMovie = await knex("movies").where({ id }).del();
+    if (deletedMovie) {
+      res.status(200).json({ message: "Movie deleted successfully" });
+    } else {
+      res.status(404).json({ error: "Movie not found" });
+    }
+  } catch (err) {
+    console.error("Error deleting movie:", err);
+    res.status(500).json({ error: "Failed to delete movie" });
+  }
+});
+
+
 app.listen(PORT, () => console.log(`Express server is listening on ${PORT}.`))
