@@ -122,20 +122,30 @@ function App() {
       </div>
 
       <h1>Movie List</h1>
-        {filteredMovies.length > 0 ? (
-          filteredMovies.map((movie) => (
-            <div key={movie.id} className="movie-item">
-              <p>{movie.title}</p>
-              <button
-                className={`watched-button ${movie.watched ? "watched" : "not-watched"}`}
-                  onClick={() => toggleWatched(movie.id, movie.watched)}
-              >
-                {movie.watched ? "Watched ✅" : "Not Watched ❌"}
-              </button>
-              <button className="delete-button" onClick={() => handleDeleteMovie(movie.id)}>Delete</button>
+      {filteredMovies.length > 0 ? (
+         filteredMovies.map((movie) => (
+          <div key={movie.id} className="movie-item">
+             <p className="movie-title">{movie.title}</p>
+
+            {/* Watched Toggle Container */}
+            <div className="toggle-container">
+              <label className="toggle-label">Watched?</label>
+              <label className="switch">
+                <input
+                  type="checkbox"
+                  checked={movie.watched}
+                  onChange={() => toggleWatched(movie.id, movie.watched)}
+                />
+                <span className="slider round"></span>
+              </label>
             </div>
-          ))
-        ) : (
+
+            <button className="delete-button" onClick={() => handleDeleteMovie(movie.id)}>
+              Delete
+            </button>
+          </div>
+        ))
+      ) : (
         <p>No movies found</p>
       )}
 

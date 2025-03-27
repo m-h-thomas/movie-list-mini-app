@@ -26,7 +26,7 @@
   background-color: darkred;
 }
 
-
+/*
 .movie-item .watched-button {
   background-color: gray;
   color: white;
@@ -45,4 +45,114 @@
 
 .movie-item .watched-button.not-watched {
   background-color: gray;
+} */
+
+/* The switch container */
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 40px;
+  height: 20px;
+}
+
+/* Hide the default checkbox */
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+/* Movie item container */
+.movie-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between; /* Space out elements */
+  gap: 20px;
+  padding: 10px;
+  border-bottom: 1px solid #ddd;
+}
+
+/* Movie title styling */
+.movie-title {
+  flex: 1;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+/* Toggle container */
+.toggle-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Center the label and switch */
+}
+
+/* Watched label */
+.toggle-label {
+  font-size: 12px;
+  margin-bottom: 4px;
+}
+
+/* The switch container */
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 40px;
+  height: 20px;
+}
+
+/* Hide default checkbox */
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+/* The slider */
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  transition: 0.4s;
+  border-radius: 20px;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 14px;
+  width: 14px;
+  left: 3px;
+  bottom: 3px;
+  background-color: white;
+  transition: 0.4s;
+  border-radius: 50%;
+}
+
+/* Checked state */
+input:checked + .slider {
+  background-color: green;
+}
+
+input:checked + .slider:before {
+  transform: translateX(20px);
+}
+
+/* Delete button */
+.delete-button {
+  background-color: red;
+  color: white;
+  border: none;
+  padding: 6px 10px;
+  font-size: 12px;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: background-color 0.3s ease;
+}
+
+.delete-button:hover {
+  background-color: darkred;
 }
